@@ -185,8 +185,6 @@ io.sockets.on('connection', function (socket) {
     sendAllPlayers('receiver', { msg: 'Danke fürs Spielen',showbutton:1 });
     playersReady = false;
     wasIntro = true;
-    sleep(5000);
-    transmitter();
   }
 
 });
