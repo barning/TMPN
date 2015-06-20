@@ -183,6 +183,8 @@ io.sockets.on('connection', function (socket) {
       sleep(1000000000000);
     }
     sendAllPlayers('receiver', { msg: 'Danke fürs Spielen',showbutton:1 });
+    playersReady = false;
+    wasIntro = true;
   }
 
 });
