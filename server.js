@@ -25,6 +25,22 @@ app.get('/', function (req, res) {
 var connections = [];
 var players = [];
 
+var wasIntro = false;
+
+var myQuests = [
+  'Springt im Kreis',
+  'Lacht euch laut an',
+  'Wedelt mit den Armen',
+  'Grüßt andere Leute',
+  'Wedelt mit den Armen',
+  'Tut so als könntet ihr fliegen',
+  'Ruft euren Namen',
+  'Schmeißt die Fuffies durch den Club und schreit: BO, BO!',
+  'Fasst euch an den Kopf'
+  ]
+
+var playersReady = false;
+
 // This is a Player
 function Player(socket) {
   this.socket = socket;
@@ -35,7 +51,19 @@ function Player(socket) {
 //Socket.io emits this event when a connection is made.
 io.sockets.on('connection', function (socket) {
 
-
+  function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
+}
+  var sendAllPlayers = function(command, data) {
+    for (var i = 0; i < players.length; i++) {
+      players[i].socket.emit(command, data);
+    }
+  }
   var removePlayerBySocketId = function(id) {
     var pNr = getPlayerNrById(id);
     if (pNr !== undefined) {
@@ -93,15 +121,12 @@ io.sockets.on('connection', function (socket) {
     console.log("disconnect " + socket.id );
     console.log("I see "+connections.length+" connections and");
     console.log(players.length+" Player/s");
+    transmitter();
   });
 
   // Emit a message to send it to the client.
   socket.emit('ping', { msg: 'Willkommen zu diesem WiFi' });
 
-  // Print messages from the client.
-  socket.on('pong', function (data) {
-    console.log(data.msg);
-  });
   // register players, if the player is not already registered
   socket.on('register', function (data) {
     var player = getPlayerBySocket(socket);
@@ -115,5 +140,49 @@ io.sockets.on('connection', function (socket) {
     console.log("I see "+connections.length+" connections and");
     console.log(players.length+" Player/s");
   });
+
+  // Print messages from the client.
+  socket.on('pong', function (data) {
+    console.log(data.msg);
+    transmitter();
+  });
+
+  // Players say they are ready
+  socket.on('theyAreReady', function (data) {
+    playersReady = true;
+    sendAllPlayers('receiver', { msg: 'Super, ihr seid bereit!',showbutton:0 });
+    sleep(5000);
+    transmitter();
+  });
+
+  // The Message Transmitter
+  var transmitter = function(){
+    var playerNumber = players.length;
+
+    if (playerNumber == 1 && !playersReady) {
+      sendAllPlayers('receiver', { msg: 'Du bist alleine! Suche dir einen Partner',showbutton:0 });
+    }
+    else if (!wasIntro) {
+      sendAllPlayers('receiver', { msg: 'Ihr seid '+playerNumber+" Personen in diesem WiFi. <br> Seid ihr bereit?",showbutton:1});
+    }
+
+    if (playersReady) {
+      if (!wasIntro){sendAllPlayers('receiver', { msg: 'Hier kommen die Aufgaben!'});}
+      sleep(10000);
+      quest();
+    }
+  }
+
+  function quest(){
+    wasIntro = true;
+
+    for (var i = 1; i < 10; i++) {
+      console.log('QUEST');
+      var q = Math.floor((Math.random() * myQuests.length));
+      sendAllPlayers('receiver', { msg: myQuests[q]});
+      sleep(1000000000000);
+    }
+    sendAllPlayers('receiver', { msg: 'Danke fürs Spielen',showbutton:1 });
+  }
 
 });
