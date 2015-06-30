@@ -37,7 +37,7 @@ var myQuests = [
   'Ruft euren Namen',
   'Schmeißt die Fuffies durch den Club und schreit: BO, BO!',
   'Fasst euch an den Kopf'
-  ]
+]
 
 var playersReady = false;
 
@@ -52,13 +52,13 @@ function Player(socket) {
 io.sockets.on('connection', function (socket) {
 
   function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
     }
   }
-}
   var sendAllPlayers = function(command, data) {
     for (var i = 0; i < players.length; i++) {
       players[i].socket.emit(command, data);
@@ -143,7 +143,7 @@ io.sockets.on('connection', function (socket) {
 
   // Print messages from the client.
   socket.on('pong', function (data) {
-    console.log(data.msg);
+    //console.log(data.msg);
     transmitter();
   });
 
@@ -173,18 +173,21 @@ io.sockets.on('connection', function (socket) {
     }
   }
 
+  // Quest Generator
   function quest(){
     wasIntro = true;
 
     for (var i = 1; i < 10; i++) {
-      console.log('QUEST');
       var q = Math.floor((Math.random() * myQuests.length));
       sendAllPlayers('receiver', { msg: myQuests[q]});
       sleep(1000000000000);
     }
-    sendAllPlayers('receiver', { msg: 'Danke fürs Spielen',showbutton:1 });
+    sendAllPlayers('receiver', { msg: 'Danke fürs Spielen'});
     playersReady = false;
-    wasIntro = true;
+    wasIntro = false;
+    sleep(50000);
+    sendAllPlayers('receiver', { showbutton:1 });
+    transmitter();
   }
 
 });
