@@ -166,7 +166,7 @@ io.sockets.on('connection', function (socket) {
   var transmitter = function(){
     var playerNumber = players.length;
 
-    if (playerNumber < 2 && !playersReady) {
+    if (playerNumber == 2 && !playersReady) {
       sendAllPlayers('receiver', { msg: 'Du bist alleine! Suche dir mindestens zwei Partner,<br> die mit diesem WiFi verbunden sein müssen.',showbutton:0 });
     }
     else if (!wasIntro) {
