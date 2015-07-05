@@ -27,16 +27,23 @@ var players = [];
 
 var wasIntro = false;
 
+// Array for Quests
 var myQuests = [
   'Springt im Kreis',
   'Lacht euch laut an',
   'Wedelt mit den Armen',
   'Grüßt andere Leute',
-  'Wedelt mit den Armen',
   'Tut so als könntet ihr fliegen',
   'Ruft euren Namen',
   'Schmeißt die Fuffies durch den Club und schreit: BO, BO!',
-  'Fasst euch an den Kopf'
+  'Fasst euch an den Kopf',
+  'Schüttelt euch die Hände',
+  'Dreht euch im Kreis',
+  'Zählt laut bis 5',
+  'Stampft mit den Füßen',
+  'Gebt euch einen High-Five',
+  'Macht den Ententanz',
+  'Muht wie eine Kuh'
 ]
 
 var playersReady = false;
@@ -168,26 +175,40 @@ io.sockets.on('connection', function (socket) {
 
     if (playersReady) {
       if (!wasIntro){sendAllPlayers('receiver', { msg: 'Hier kommen die Aufgaben!'});}
-      sleep(10000);
+      sleep(5000);
+      sendAllPlayers('receiver', { msg: 'Schüttelt euch die Hände'});
+      sleep(5000);
       quest();
     }
+  }
+
+  function reset(){
+    sendAllPlayers('receiver', { msg: 'Danke fürs Spielen'});
+    sleep(10000);
+    playersReady = false;
+    wasIntro = false;
+    sendAllPlayers('receiver', { showbutton:1 });
+    transmitter();
+  }
+
+  // Quest Loop
+  function questLoop (i) {
+    setTimeout(function () {
+      var q = Math.floor((Math.random() * myQuests.length));
+      sendAllPlayers('receiver', { msg: myQuests[q]});
+      if (--i) {
+        questLoop(i);
+      }
+      else {
+        reset();
+      }
+    }, 5000);
   }
 
   // Quest Generator
   function quest(){
     wasIntro = true;
-
-    for (var i = 1; i < 10; i++) {
-      var q = Math.floor((Math.random() * myQuests.length));
-      sendAllPlayers('receiver', { msg: myQuests[q]});
-      sleep(1000000000000);
-    }
-    sendAllPlayers('receiver', { msg: 'Danke fürs Spielen'});
-    playersReady = false;
-    wasIntro = false;
-    sleep(50000);
-    sendAllPlayers('receiver', { showbutton:1 });
-    transmitter();
+    questLoop(10);
   }
 
 });
