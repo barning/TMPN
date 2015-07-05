@@ -35,7 +35,6 @@ var myQuests = [
   'Grüßt andere Leute',
   'Tut so als könntet ihr fliegen',
   'Ruft euren Namen',
-  'Schmeißt die Fuffies durch den Club und schreit: BO, BO!',
   'Fasst euch an den Kopf',
   'Schüttelt euch die Hände',
   'Dreht euch im Kreis',
