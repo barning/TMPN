@@ -166,18 +166,23 @@ io.sockets.on('connection', function (socket) {
   var transmitter = function(){
     var playerNumber = players.length;
 
-    if (playerNumber == 1 && !playersReady) {
-      sendAllPlayers('receiver', { msg: 'Du bist alleine! Suche dir einen Partner',showbutton:0 });
+    if (playerNumber < 2 && !playersReady) {
+      sendAllPlayers('receiver', { msg: 'Du bist alleine! Suche dir mindestens zwei Partner,<br>
+      die mit diesem WiFi verbunden sein müssen.',showbutton:0 });
     }
     else if (!wasIntro) {
       sendAllPlayers('receiver', { msg: 'Ihr seid '+playerNumber+" Personen in diesem WiFi. <br> Seid ihr bereit?",showbutton:1});
     }
 
     if (playersReady) {
-      if (!wasIntro){sendAllPlayers('receiver', { msg: 'Hier kommen die Aufgaben!'});}
-      sleep(5000);
+      if (!wasIntro){
+        sendAllPlayers('receiver', { msg: 'Ihr bekommt jetzt Aufgaben.'});
+        sleep(10000);
+        sendAllPlayers('receiver', { msg: 'Löst sie für ein kommunikatives Erlebnis!'});
+        sleep(10000);
+      }
       sendAllPlayers('receiver', { msg: 'Schüttelt euch die Hände'});
-      sleep(5000);
+      sleep(8000);
       quest();
     }
   }
@@ -202,7 +207,7 @@ io.sockets.on('connection', function (socket) {
       else {
         reset();
       }
-    }, 5000);
+    }, 8000);
   }
 
   // Quest Generator
