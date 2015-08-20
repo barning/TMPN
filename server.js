@@ -28,20 +28,39 @@ var players = [];
 var wasIntro = false;
 
 // Array for Quests
-var myQuests = [
+
+var jumpingQuests [
   'Springt im Kreis',
+  'Springt nach vorne',
+  'Springt zurück',
+  'Springt zur Seite'
+];
+var runningQuests [
+  'Lauft im Kreis',
+  'Geht zwei Schritte vor',
+  'Geht zwei Schritte zurück',
+  'Macht einen Schritt zur Seite'
+];
+var noiseQuests [
   'Lacht euch laut an',
-  'Wedelt mit den Armen',
   'Grüßt andere Leute',
-  'Tut so als könntet ihr fliegen',
   'Ruft euren Namen',
+  'Muht wie eine Kuh'
+];
+var sportQuests [
+  'Wedelt mit den Armen',
+  'Macht einen Sit-Up',
+  'Dreht euch im Kreis',
+  'Stampft mit den Füßen',
+];
+var interactionQuests[
   'Fasst euch an den Kopf',
   'Schüttelt euch die Hände',
-  'Dreht euch im Kreis',
   'Zählt laut bis 5',
-  'Stampft mit den Füßen',
   'Gebt euch einen High-Five',
-  'Macht den Ententanz',
+];
+
+var myQuests = [
   'Muht wie eine Kuh'
 ]
 
@@ -211,7 +230,7 @@ io.sockets.on('connection', function (socket) {
   // Quest Generator
   function quest(){
     wasIntro = true;
-    questLoop(10);
+    questLoop(5);
   }
 
 });
