@@ -20,6 +20,34 @@ console.log(url);
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/index.html');
 });
+app.get('/assets/css/materialize.css', function (req, res) {
+  res.sendfile(__dirname + '/assets/css/materialize.css');
+});
+app.get('/assets/font/roboto/Roboto-Regular.woff', function (req, res) {
+  res.sendfile(__dirname + '/assets/font/roboto/Roboto-Regular.woff');
+});
+app.get('/assets/font/roboto/Roboto-Regular.ttf', function (req, res) {
+  res.sendfile(__dirname + '/assets/font/roboto/Roboto-Regular.ttf');
+});
+
+app.get('/assets/interagieren.gif', function (req, res) {
+  res.sendfile(__dirname + '/assets/interagieren.gif');
+});
+app.get('/assets/kniebeuge.gif', function (req, res) {
+  res.sendfile(__dirname + '/assets/kniebeuge.gif');
+});
+app.get('/assets/laufen.gif', function (req, res) {
+  res.sendfile(__dirname + '/assets/laufen.gif');
+});
+app.get('/assets/sprechen.gif', function (req, res) {
+  res.sendfile(__dirname + '/assets/sprechen.gif');
+});
+app.get('/assets/springen.gif', function (req, res) {
+  res.sendfile(__dirname + '/assets/springen.gif');
+});
+app.get('/assets/winken.gif', function (req, res) {
+  res.sendfile(__dirname + '/assets/winken.gif');
+});
 
 // Arrays for Connections
 var connections = [];
@@ -29,40 +57,38 @@ var wasIntro = false;
 
 // Array for Quests
 
-var jumpingQuests [
+var jumpingQuests = [
   'Springt im Kreis',
   'Springt nach vorne',
   'Springt zurück',
   'Springt zur Seite'
 ];
-var runningQuests [
+var runningQuests = [
   'Lauft im Kreis',
   'Geht zwei Schritte vor',
   'Geht zwei Schritte zurück',
   'Macht einen Schritt zur Seite'
 ];
-var noiseQuests [
+var noiseQuests = [
   'Lacht euch laut an',
   'Grüßt andere Leute',
   'Ruft euren Namen',
   'Muht wie eine Kuh'
 ];
-var sportQuests [
+var sportQuests = [
   'Wedelt mit den Armen',
   'Macht einen Sit-Up',
   'Dreht euch im Kreis',
   'Stampft mit den Füßen',
 ];
-var interactionQuests[
+var interactionQuests = [
   'Fasst euch an den Kopf',
   'Schüttelt euch die Hände',
   'Zählt laut bis 5',
   'Gebt euch einen High-Five',
 ];
 
-var myQuests = [
-  'Muht wie eine Kuh'
-]
+var myQuests = [interactionQuests,sportQuests,runningQuests,noiseQuests,jumpingQuests]
 
 var playersReady = false;
 
@@ -75,6 +101,19 @@ function Player(socket) {
 
 //Socket.io emits this event when a connection is made.
 io.sockets.on('connection', function (socket) {
+
+  function getImages(imageDir, callback) {
+    var fileType = '.gif',
+        files = [], i;
+    fs.readdir(imageDir, function (err, list) {
+        for(i=0; i<list.length; i++) {
+            if(path.extname(list[i]) === fileType) {
+                files.push(list[i]); //store the file name into the array files
+            }
+        }
+        callback(err, files);
+    });
+}
 
   function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -185,28 +224,28 @@ io.sockets.on('connection', function (socket) {
     var playerNumber = players.length;
 
     if (playerNumber < 3 && !playersReady) {
-      sendAllPlayers('receiver', { msg: 'Suche dir mindestens zwei Partner,<br> die mit diesem WiFi verbunden sein müssen.',showbutton:0 });
+      sendAllPlayers('receiver', { msg: 'Suche dir mindestens zwei Partner,<br> die mit diesem WiFi verbunden sein müssen.',showbutton:0,img: 0 });
     }
     else if (!wasIntro) {
-      sendAllPlayers('receiver', { msg: 'Ihr seid '+playerNumber+" Personen in diesem WiFi. <br> Seid ihr bereit?",showbutton:1});
+      sendAllPlayers('receiver', { msg: 'Ihr seid '+playerNumber+" Personen in diesem WiFi. <br> Seid ihr bereit?",showbutton:1,img: 0});
     }
 
     if (playersReady) {
       if (!wasIntro){
-        sendAllPlayers('receiver', { msg: 'Ihr bekommt jetzt Aufgaben.'});
-        sleep(10000);
-        sendAllPlayers('receiver', { msg: 'Löst sie für ein kommunikatives Erlebnis!'});
-        sleep(10000);
+        sendAllPlayers('receiver', { msg: 'Ihr bekommt jetzt Aufgaben.',img: 0});
+        sleep(20000);
+        sendAllPlayers('receiver', { msg: 'Löst sie für ein kommunikatives Erlebnis!',img: 0});
+        sleep(20000);
       }
-      sendAllPlayers('receiver', { msg: 'Schüttelt euch die Hände'});
+      sendAllPlayers('receiver', { msg: 'Schüttelt euch die Hände',img: 0});
       sleep(8000);
       quest();
     }
   }
 
   function reset(){
-    sendAllPlayers('receiver', { msg: 'Danke fürs Spielen'});
-    sleep(10000);
+    sendAllPlayers('receiver', { msg: 'Danke fürs Spielen',img: 0});
+    sleep(50000);
     playersReady = false;
     wasIntro = false;
     sendAllPlayers('receiver', { showbutton:1 });
@@ -217,7 +256,8 @@ io.sockets.on('connection', function (socket) {
   function questLoop (i) {
     setTimeout(function () {
       var q = Math.floor((Math.random() * myQuests.length));
-      sendAllPlayers('receiver', { msg: myQuests[q]});
+      var r = myQuests[q];
+      sendAllPlayers('receiver', { msg: r[Math.floor((Math.random() * r.length))], img:q});
       if (--i) {
         questLoop(i);
       }
