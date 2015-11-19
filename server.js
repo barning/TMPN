@@ -214,8 +214,8 @@ io.sockets.on('connection', function (socket) {
   // Players say they are ready
   socket.on('theyAreReady', function (data) {
     playersReady = true;
-    sendAllPlayers('receiver', { msg: 'Super, ihr seid bereit!',showbutton:0 });
-    sleep(5000);
+    sendAllPlayers('receiver', { msg: 'Super, ihr seid bereit!<br><br>Ihr bekommt jetzt Aufgaben.<br><br>Löst sie für ein kommunikatives Erlebnis.',showbutton:0 });
+    sleep(20000);
     transmitter();
   });
 
@@ -231,12 +231,12 @@ io.sockets.on('connection', function (socket) {
     }
 
     if (playersReady) {
-      if (!wasIntro){
-        sendAllPlayers('receiver', { msg: 'Ihr bekommt jetzt Aufgaben.',img: 0});
-        sleep(20000);
-        sendAllPlayers('receiver', { msg: 'Löst sie für ein kommunikatives Erlebnis!',img: 0});
-        sleep(20000);
-      }
+      // if (!wasIntro){
+      //   sendAllPlayers('receiver', { msg: 'Ihr bekommt jetzt Aufgaben.',img: 0});
+      //   sleep(20000);
+      //   sendAllPlayers('receiver', { msg: 'Löst sie für ein kommunikatives Erlebnis!',img: 0});
+      //   sleep(20000);
+      // }
       sendAllPlayers('receiver', { msg: 'Schüttelt euch die Hände',img: 0});
       sleep(8000);
       quest();

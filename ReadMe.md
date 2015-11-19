@@ -1,42 +1,17 @@
-# Node Apps
-## socket.io boilerplate
+# Temporary Managed People Network for RaspberryPi
+TMPN is a Tool to support group orientated, interhuman interactions. The System gets quietly and secretly setup to go among the People. The Users can connect now to the “Free Pseudo Wifi”. Everyone who is connected with his mobile device gets instructions for a unique, communicative group experience. The Users are now on their own and getting different Tasks and Quest, which are designed to get done in collaboration as a group.
 
-[http://socket.io](http://socket.io)
+Made with: [http://socket.io](http://socket.io)
 
-![](https://github.com/nodeapps/boilerplates/raw/master/screenshots/socket.io.png)
+### Screenshots
+![alt text](http://hacksandhoaxes.digitalemedien-bremen.de/img/nbfw-tmpn.jpg)
 
-# Installation
+![alt text](http://niklasbarning.de/assets/tmpn/2.jpg)
 
-    mkdir myapp
-    cd myapp/
-    jitsu install socket.io
-
-*If you do not have `jitsu` installed you can install it via `npm install jitsu -g`*
-
-
-# Usage
+![alt text](http://niklasbarning.de/assets/tmpn/4.jpg)
 
 ### Starting boilerplate locally
 
     npm start
 
-*Now you can visit http://localhost:8080 to view your application*
-
-### Deploy boilerplate to nodejitsu
-
-    jitsu deploy
-
-*You will now be prompted for a `subdomain` to deploy your application on*
-
-
-# License
-
-(The MIT License)
-
-Copyright (c) 2013 Nodejitsu
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*Now you can visit http://localhost:64782 to view your application*
